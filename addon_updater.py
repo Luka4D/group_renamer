@@ -9,7 +9,7 @@ import json
 import importlib
 
 # Your repo information here
-GITHUB_API_RELEASES = "https://api.github.com/repos/LukaMihajlov/group_renamer/releases/latest"
+GITHUB_API_RELEASES = "https://api.github.com/repos/Luka4D/group_renamer/releases/latest"
 DOWNLOAD_URL_TEMPLATE = "https://github.com/LukaMihajlov/group_renamer/archive/refs/tags/v{tag_name}.zip"
 
 def get_bl_info():

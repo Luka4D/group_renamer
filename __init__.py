@@ -2,6 +2,7 @@ from . import group_data
 from . import custom_renamer
 from . import group_pie_menu
 from . import addon_updater
+from . import curve_namer
 
 bl_info = {
     "name": "Group Renamer",
@@ -26,11 +27,13 @@ else:
 def register():
     custom_renamer.register()
     group_pie_menu.register()
+    curve_namer.register()
     addon_updater.register_updater()
     addon_updater.check_for_update()
 
 def unregister():
     group_pie_menu.unregister()
     custom_renamer.unregister()
+    curve_namer.unregister()
     addon_updater.register_updater()
     addon_updater.check_for_update()
