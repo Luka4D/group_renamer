@@ -6,7 +6,7 @@ from . import addon_updater
 bl_info = {
     "name": "Group Renamer",
     "author": "Luka4D",
-    "version": (1, 2, 0),
+    "version": (1, 2, 1),
     "blender": (4, 2),
     "location": "View3D > Sidebar > Namer Tab",
     "description": "Rename objects based on group and sub-group, with pie menu support",
