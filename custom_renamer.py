@@ -4,6 +4,21 @@ from bpy.types import Panel, Operator, PropertyGroup
 from bpy.props import EnumProperty, PointerProperty
 from .group_data import GROUPS
 
+def link_material(material_name, blend_path):
+    if not blend_path:
+        print("No blend path set, skipping material link.")
+        return None
+    
+    try:
+        with bpy.data.libraries.load(blend_path, link=True) as (data_from, data_to):
+            if material_name in data_from.materials:
+                if material_name not in bpy.data.materials:
+                    data_to.materials.append(material_name)
+        return bpy.data.materials.get(material_name)
+    except Exception as e:
+        print(f"Failed to link material '{material_name}': {e}")
+        return None        
+
 def update_subgroup(self, context):
     if self.group in GROUPS:
         subgroups = GROUPS[self.group]
@@ -63,6 +78,24 @@ class OBJECT_OT_rename_to_subgroup(Operator):
         mesh.name = new_name
 
         self.report({'INFO'}, f"Renamed object and mesh to {new_name}")
+    
+        # Link and assign material
+        try:
+            preferences = context.preferences.addons[__package__].preferences
+            blend_path = preferences.materials_blend_path
+            material_name = new_name.lower()
+
+            mat = link_material(material_name, blend_path)
+            if mat:
+                # Clear existing materials and assign new one
+                obj.data.materials.clear()
+                obj.data.materials.append(mat)
+                self.report({'INFO'}, f"Renamed and assigned material '{material_name}'")
+            else:
+                self.report({'WARNING'}, f"Material '{material_name}' not found or failed to link.")
+        except Exception as e:
+            self.report({'ERROR'}, f"Material assignment error: {e}")
+
         return {'FINISHED'}
 
 class VIEW3D_PT_group_renamer(Panel):

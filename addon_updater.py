@@ -77,12 +77,20 @@ class GroupRenamerPreferences(AddonPreferences):
 
     update_available: BoolProperty(default=False)
     latest_version: StringProperty(default="")
+    materials_blend_path: StringProperty(
+        name="Materials Blend File",
+        description="Path to the .blend file containing materials",
+        subtype="FILE_PATH"
+    )
 
     def draw(self, context):
         layout = self.layout
         bl_info = get_bl_info()
         current_ver = ".".join(map(str, bl_info["version"]))
         layout.label(text=f"Current Version: {current_ver}")
+
+        # New Material Path Field
+        layout.prop(self, "materials_blend_path")
 
         if self.update_available:
             row = layout.row()
